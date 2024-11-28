@@ -172,23 +172,21 @@ class _CharactersPageState extends State<CharactersPage> {
     );
   }
 
-  Expanded buildList() {
-    return Expanded(
-      child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-          childAspectRatio: 0.8,
-        ),
-        itemCount: (pageIndex * 10 <= count) ? 10 : count % 10,
-        itemBuilder: (context, index) {
-          final character = characters[index];
-          return Card(
-            child: CharacterWidget(character: character),
-          );
-        },
+  Widget buildList() {
+    return GridView.builder(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        childAspectRatio: 0.8,
       ),
+      itemCount: (pageIndex * 10 <= count) ? 10 : count % 10,
+      itemBuilder: (context, index) {
+        final character = characters[index];
+        return Card(
+          child: CharacterWidget(character: character),
+        );
+      },
     );
   }
 }
