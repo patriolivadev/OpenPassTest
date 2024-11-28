@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_pass_test_oliva_patricio/core/entities/filter.dart';
@@ -14,6 +16,7 @@ class CharactersPage extends StatefulWidget {
 
 class _CharactersPageState extends State<CharactersPage> {
   final CharacterBloc _bloc = getIt<CharacterBloc>();
+  final TextEditingController _textController = TextEditingController();
 
   List characters = [];
   int count = 0;
@@ -21,6 +24,7 @@ class _CharactersPageState extends State<CharactersPage> {
   Filter filter = Filter(name: '', index: 1);
   String characterName = '';
   bool showOnlyFavorites = false;
+  Timer? _debounce;
 
   @override
   void initState() {
@@ -29,12 +33,33 @@ class _CharactersPageState extends State<CharactersPage> {
   }
 
   @override
+  void dispose() {
+    _debounce?.cancel();
+    _textController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer(
-        bloc: _bloc,
-        builder: builder,
-        listener: listener,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.04),
+              child: buildHeader(),
+            ),
+            const SizedBox(height: 16),
+            Expanded(
+              child: BlocConsumer<CharacterBloc, CharacterState>(
+                bloc: _bloc,
+                builder: builder,
+                listener: listener,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -52,7 +77,7 @@ class _CharactersPageState extends State<CharactersPage> {
       return const Center(child: CircularProgressIndicator());
     }
 
-    if (state is OnGetCharactersFailure){
+    if (state is OnGetCharactersFailure) {
       return const Center(
         child: Text('¡Ups! Algo salió mal.'),
       );
@@ -64,36 +89,12 @@ class _CharactersPageState extends State<CharactersPage> {
       );
     }
 
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          buildHeader(),
-          const SizedBox(height: 16),
-          buildList(),
-          buildPager(),
-        ],
-      ),
-    );
-  }
-
-  Expanded buildList() {
-    return Expanded(
-      child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-          childAspectRatio: 0.8,
-        ),
-        itemCount: count,
-        itemBuilder: (context, index) {
-          final character = characters[index];
-          return Card(
-            child: CharacterWidget(character:  character),
-          );
-        },
-      ),
+    return Column(
+      children: [
+        Expanded(child: buildList()),
+        const SizedBox(height: 10,),
+        buildPager(),
+      ],
     );
   }
 
@@ -101,7 +102,7 @@ class _CharactersPageState extends State<CharactersPage> {
     return Row(
       children: [
         buildSearchField(),
-        const SizedBox(width: 8),
+        SizedBox(width: MediaQuery.of(context).size.width * 0.04),
         buildFavoritesButton(),
       ],
     );
@@ -110,14 +111,16 @@ class _CharactersPageState extends State<CharactersPage> {
   Expanded buildSearchField() {
     return Expanded(
       child: TextField(
+        controller: _textController,
         decoration: const InputDecoration(hintText: 'Nombre del personaje...'),
         onChanged: (value) {
-          setState(() {
+          if (_debounce?.isActive ?? false) _debounce!.cancel();
+          _debounce = Timer(const Duration(milliseconds: 500), () {
             characterName = value;
             pageIndex = 1;
+            filter = Filter(name: characterName, index: pageIndex);
+            _bloc.add(ActionGetCharacters(filter: filter));
           });
-          filter = Filter(name: characterName, index: pageIndex);
-          _bloc.add(ActionGetCharacters(filter: filter));
         },
       ),
     );
@@ -133,12 +136,59 @@ class _CharactersPageState extends State<CharactersPage> {
       child: Text(showOnlyFavorites ? 'Show All' : 'Show Favorites'),
     );
   }
-  
+
   Row buildPager() {
-    return const Row(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: pageIndex > 1
+              ? () {
+            setState(() {
+              pageIndex--;
+            });
+            filter = Filter(name: characterName, index: pageIndex);
+            _bloc.add(ActionGetCharacters(filter: filter));
+          }
+              : null,
+        ),
+        const SizedBox(width: 20,),
+        Text('Page $pageIndex'),
+        const SizedBox(width: 20,),
+        IconButton(
+          icon: const Icon(Icons.arrow_forward),
+          onPressed: count > pageIndex * 10
+              ? () {
+            setState(() {
+              pageIndex++;
+            });
+            filter = Filter(name: characterName, index: pageIndex);
+            _bloc.add(ActionGetCharacters(filter: filter));
+          }
+              : null,
+        ),
       ],
+    );
+  }
+
+  Expanded buildList() {
+    return Expanded(
+      child: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          childAspectRatio: 0.8,
+        ),
+        itemCount: (pageIndex * 10 <= count) ? 10 : count % 10,
+        itemBuilder: (context, index) {
+          final character = characters[index];
+          return Card(
+            child: CharacterWidget(character: character),
+          );
+        },
+      ),
     );
   }
 }

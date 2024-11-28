@@ -18,35 +18,63 @@ class _CharacterWidgetState extends State<CharacterWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: Image.network(
-            getCharacterImageUrl(widget.character.id),
-            fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) =>
-                const Icon(Icons.image, size: 50),
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.03),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      widget.character.name,
+                      style: const TextStyle(fontSize: 25),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(
+                    favorites.contains(widget.character.id)
+                        ? Icons.star
+                        : Icons.star_border,
+                    color: favorites.contains(widget.character.id)
+                        ? Colors.yellow
+                        : null,
+                    size: 40,
+                  ),
+                  onPressed: () => toggleFavorite(widget.character.id),
+                ),
+              ],
+            ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(widget.character.name),
-        ),
-        IconButton(
-          icon: Icon(
-            favorites.contains(widget.character.id)
-                ? Icons.star
-                : Icons.star_border,
-            color: favorites.contains(widget.character.id) ? Colors.yellow : null,
+          const SizedBox(height: 8),
+          Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
+              child: Image.network(
+                getCharacterImageUrl(widget.character.id),
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) =>
+                const Icon(Icons.image, size: 10),
+              ),
+            ),
           ),
-          onPressed: () => toggleFavorite(widget.character.id),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
+
   String getCharacterImageUrl(int id) {
-    return 'https://starwars-visualguide.com/assets/img/characters/$id.jpg';
+    String url =
+        'https://starwars-visualguide.com/assets/img/characters/$id.jpg';
+    print(url);
+    return url;
   }
 
   void toggleFavorite(int id) {

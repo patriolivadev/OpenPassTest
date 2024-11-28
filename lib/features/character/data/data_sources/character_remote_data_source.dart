@@ -27,7 +27,7 @@ class CharacterRemoteDataSource extends CharacterRemoteDataSourceBase {
     final result = await http.get(url);
 
     List<CharacterModel> characters = (result['results'] as List)
-        .map((characterJson) => CharacterModel.fromJson(characterJson))
+        .map((characterJson) => CharacterModel.fromJson(Map<String, dynamic>.from(characterJson)))
         .toList();
 
     int count = result['count'];

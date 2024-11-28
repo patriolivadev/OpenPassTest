@@ -9,11 +9,12 @@ class CharacterModel extends Character {
   factory CharacterModel.fromJson(Map<String, dynamic> json) {
     String url = json['url'] ?? 'Unknown';
 
-    final id = int.tryParse(url.split('/').last) ?? 0;
+    final id = int.tryParse(url.split('/')[url.split('/').length - 2]) ?? 0;
 
     return CharacterModel(
       id: id,
       name: json['name'] ?? 'Unknown',
     );
   }
+
 }
