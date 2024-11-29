@@ -22,3 +22,39 @@ final class OnGetCharactersFailure extends CharacterState {
     required this.failure,
   });
 }
+
+final class OnGetFavoriteCharacters extends CharacterState {
+  final List<Character> characters;
+
+  OnGetFavoriteCharacters({
+    required this.characters,
+  });
+}
+
+final class OnSaveFavoriteCharacter extends CharacterState {
+  final int id;
+
+  OnSaveFavoriteCharacter({required this.id});
+}
+
+final class OnSaveFavoriteCharacterFailure extends CharacterState {
+  final Failure failure;
+
+  OnSaveFavoriteCharacterFailure({
+    required this.failure,
+  });
+}
+
+final class OnRemoveFavoriteCharacter extends CharacterState {
+  final int id;
+
+  OnRemoveFavoriteCharacter({required this.id});
+}
+
+final class OnRemoveFavoriteCharacterFailure extends CharacterState {
+  final Failure failure;
+
+  OnRemoveFavoriteCharacterFailure({
+    required this.failure,
+  });
+}

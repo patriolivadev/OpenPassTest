@@ -65,11 +65,20 @@ class _CharactersPageState extends State<CharactersPage> {
   }
 
   void listener(context, state) {
+    print(state.runtimeType);
+
     if (state is OnGetCharacters) {
       characters = state.response.characters;
       count = state.response.count;
-      setState(() {});
     }
+
+    if (state is OnSaveFavoriteCharacter){
+      characters.where((element) => element.id == state.id,);
+    }
+    if (state is OnRemoveFavoriteCharacter){
+    }
+
+    setState(() {});
   }
 
   Widget builder(context, state) {
