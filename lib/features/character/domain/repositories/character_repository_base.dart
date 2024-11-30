@@ -10,13 +10,13 @@ abstract class CharacterRepositoryBase {
   final CharacterRemoteDataSourceBase remote;
   final CharacterLocalDataSourceBase local;
 
-  CharacterRepositoryBase({
-    required this.remote,
-    required this.local
-  });
+  CharacterRepositoryBase({required this.remote, required this.local});
 
   Future<Either<Failure, CharactersResponse>> getCharacters(Filter filter);
+
   Future<Either<Failure, List<Character>>> getFavoriteCharacters();
+
   Future<Either<Failure, int>> saveFavoriteCharacter(Character character);
+
   Future<Either<Failure, int>> removeCharacterIntent(int id);
 }

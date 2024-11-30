@@ -5,7 +5,8 @@ import 'package:open_pass_test_oliva_patricio/features/character/domain/entities
 import 'package:open_pass_test_oliva_patricio/features/character/domain/repositories/character_repository_base.dart';
 
 @injectable
-class GetFavoriteCharactersUseCase extends UseCaseBase<List<Character>, NoParams> {
+class GetFavoriteCharactersUseCase
+    extends UseCaseBase<List<Character>, NoParams> {
   final CharacterRepositoryBase repository;
 
   GetFavoriteCharactersUseCase({

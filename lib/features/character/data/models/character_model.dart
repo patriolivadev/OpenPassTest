@@ -11,7 +11,6 @@ class CharacterModel extends Character {
   static Future<CharacterModel> fromJson(
     Map<String, dynamic> json,
     CharacterLocalDataSourceBase localDataSource,
-    bool isFromLocal,
   ) async {
     String url = json['url'] ?? 'Unknown';
 
@@ -22,7 +21,17 @@ class CharacterModel extends Character {
     return CharacterModel(
       id: id,
       name: json['name'] ?? 'Unknown',
-      isFavorite: isFromLocal ? true : isFavorite,
+      isFavorite: isFavorite,
+    );
+  }
+
+  static Future<CharacterModel> fromLocalJson(
+    Map<String, dynamic> json,
+  ) async {
+    return CharacterModel(
+      id: json['id'] ?? 0,
+      name: json['name'] ?? 'Unknown',
+      isFavorite: true,
     );
   }
 

@@ -31,7 +31,7 @@ class CharacterLocalDataSource extends CharacterLocalDataSourceBase {
         if (characterJson != null) {
           Map<String, dynamic> characterMap = jsonDecode(characterJson);
 
-          characters.add(await CharacterModel.fromJson(characterMap, this, true));
+          characters.add(await CharacterModel.fromLocalJson(characterMap));
         }
       }
     }

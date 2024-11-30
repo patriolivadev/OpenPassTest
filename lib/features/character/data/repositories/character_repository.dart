@@ -39,7 +39,8 @@ class CharacterRepository extends CharacterRepositoryBase {
   }
 
   @override
-  Future<Either<Failure, int>> saveFavoriteCharacter(Character character) async {
+  Future<Either<Failure, int>> saveFavoriteCharacter(
+      Character character) async {
     try {
       await local.saveCharacter(character);
       return Right(character.id);

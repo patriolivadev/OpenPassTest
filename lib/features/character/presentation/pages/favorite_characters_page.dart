@@ -1,8 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:open_pass_test_oliva_patricio/core/entities/filter.dart';
 import 'package:open_pass_test_oliva_patricio/core/services/dependencies_service.dart';
 import 'package:open_pass_test_oliva_patricio/features/character/presentation/manager/character_bloc.dart';
 import 'package:open_pass_test_oliva_patricio/features/character/presentation/widgets/character_widget.dart';
@@ -28,6 +25,10 @@ class _FavoriteCharactersPageState extends State<FavoriteCharactersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Favoritos'),
+        centerTitle: true,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -49,6 +50,22 @@ class _FavoriteCharactersPageState extends State<FavoriteCharactersPage> {
     if (state is OnGetFavoriteCharacters) {
       characters = state.characters;
       setState(() {});
+    }
+
+    if (state is OnSaveFavoriteCharacter) {
+      for (var element in characters) {
+        if (element.id == state.id) {
+          element.isFavorite = true;
+        }
+      }
+    }
+
+    if (state is OnRemoveFavoriteCharacter) {
+      for (var element in characters) {
+        if (element.id == state.id) {
+          element.isFavorite = false;
+        }
+      }
     }
   }
 
@@ -72,7 +89,9 @@ class _FavoriteCharactersPageState extends State<FavoriteCharactersPage> {
     return Column(
       children: [
         Expanded(child: buildList()),
-        const SizedBox(height: 10,),
+        const SizedBox(
+          height: 10,
+        ),
       ],
     );
   }

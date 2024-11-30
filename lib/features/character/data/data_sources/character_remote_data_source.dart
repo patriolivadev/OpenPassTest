@@ -35,8 +35,7 @@ class CharacterRemoteDataSource extends CharacterRemoteDataSourceBase {
             (characterJson) async {
           return await CharacterModel.fromJson(
             Map<String, dynamic>.from(characterJson),
-            local,
-            false
+            local
           );
         },
       ),

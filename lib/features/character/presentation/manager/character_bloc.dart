@@ -37,58 +37,58 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
   }
 
   FutureOr<void> _getCharacters(
-      ActionGetCharacters event,
-      Emitter<CharacterState> emit,
-      ) async {
+    ActionGetCharacters event,
+    Emitter<CharacterState> emit,
+  ) async {
     emit(OnLoading());
 
     final result = await getCharactersUseCase(event.filter);
 
     result.fold(
-          (l) => emit(OnGetCharactersFailure(failure: l)),
-          (r) => emit(OnGetCharacters(response: r)),
+      (l) => emit(OnGetCharactersFailure(failure: l)),
+      (r) => emit(OnGetCharacters(response: r)),
     );
   }
 
   FutureOr<void> _getFavoriteCharacters(
-      ActionGetFavoriteCharacters event,
-      Emitter<CharacterState> emit,
-      ) async {
+    ActionGetFavoriteCharacters event,
+    Emitter<CharacterState> emit,
+  ) async {
     emit(OnLoading());
 
     final result = await getFavoriteCharactersUseCase(NoParams());
 
     result.fold(
-          (l) => emit(OnGetCharactersFailure(failure: l)),
-          (r) => emit(OnGetFavoriteCharacters(characters: r)),
+      (l) => emit(OnGetCharactersFailure(failure: l)),
+      (r) => emit(OnGetFavoriteCharacters(characters: r)),
     );
   }
 
   FutureOr<void> _saveCharacter(
-      ActionSaveFavoriteCharacter event,
-      Emitter<CharacterState> emit,
-      ) async {
+    ActionSaveFavoriteCharacter event,
+    Emitter<CharacterState> emit,
+  ) async {
     emit(OnLoading());
 
     final result = await saveFavoriteCharacterUseCase(event.character);
 
     result.fold(
-          (l) => emit(OnSaveFavoriteCharacterFailure(failure: l)),
-          (r) => emit(OnSaveFavoriteCharacter(id: r)),
+      (l) => emit(OnSaveFavoriteCharacterFailure(failure: l)),
+      (r) => emit(OnSaveFavoriteCharacter(id: r)),
     );
   }
 
   FutureOr<void> _removeCharacter(
-      ActionRemoveFavoriteCharacter event,
-      Emitter<CharacterState> emit,
-      ) async {
+    ActionRemoveFavoriteCharacter event,
+    Emitter<CharacterState> emit,
+  ) async {
     emit(OnLoading());
 
     final result = await removeFavoriteCharacterUseCase(event.id);
 
     result.fold(
-          (l) => emit(OnRemoveFavoriteCharacterFailure(failure: l)),
-          (r) => emit(OnRemoveFavoriteCharacter(id: r)),
+      (l) => emit(OnRemoveFavoriteCharacterFailure(failure: l)),
+      (r) => emit(OnRemoveFavoriteCharacter(id: r)),
     );
   }
 }

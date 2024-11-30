@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_pass_test_oliva_patricio/core/entities/filter.dart';
 import 'package:open_pass_test_oliva_patricio/core/services/dependencies_service.dart';
 import 'package:open_pass_test_oliva_patricio/features/character/presentation/manager/character_bloc.dart';
+import 'package:open_pass_test_oliva_patricio/features/character/presentation/pages/favorite_characters_page.dart';
 import 'package:open_pass_test_oliva_patricio/features/character/presentation/widgets/character_widget.dart';
 
 class CharactersPage extends StatefulWidget {
@@ -23,7 +24,6 @@ class _CharactersPageState extends State<CharactersPage> {
   int pageIndex = 1;
   Filter filter = Filter(name: '', index: 1);
   String characterName = '';
-  bool showOnlyFavorites = false;
   Timer? _debounce;
 
   @override
@@ -47,7 +47,8 @@ class _CharactersPageState extends State<CharactersPage> {
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.04),
+              padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * 0.04),
               child: buildHeader(),
             ),
             const SizedBox(height: 16),
@@ -78,7 +79,7 @@ class _CharactersPageState extends State<CharactersPage> {
       }
     }
 
-    if (state is OnRemoveFavoriteCharacter){
+    if (state is OnRemoveFavoriteCharacter) {
       for (var element in characters) {
         if (element.id == state.id) {
           element.isFavorite = false;
@@ -109,7 +110,9 @@ class _CharactersPageState extends State<CharactersPage> {
     return Column(
       children: [
         Expanded(child: buildList()),
-        const SizedBox(height: 10,),
+        const SizedBox(
+          height: 10,
+        ),
         buildPager(),
       ],
     );
@@ -145,13 +148,18 @@ class _CharactersPageState extends State<CharactersPage> {
 
   ElevatedButton buildFavoritesButton() {
     return ElevatedButton(
-      onPressed: () {
-        setState(() {
-          showOnlyFavorites = !showOnlyFavorites;
-        });
-      },
-      child: Text(showOnlyFavorites ? 'Show All' : 'Show Favorites'),
+      onPressed: goToFavoriteCharactersPage,
+      child: const Text('Show Favorites'),
     );
+  }
+
+  void goToFavoriteCharactersPage() {
+    setState(() {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const FavoriteCharactersPage()),
+      );
+    });
   }
 
   Row buildPager() {
@@ -162,27 +170,31 @@ class _CharactersPageState extends State<CharactersPage> {
           icon: const Icon(Icons.arrow_back),
           onPressed: pageIndex > 1
               ? () {
-            setState(() {
-              pageIndex--;
-            });
-            filter = Filter(name: characterName, index: pageIndex);
-            _bloc.add(ActionGetCharacters(filter: filter));
-          }
+                  setState(() {
+                    pageIndex--;
+                  });
+                  filter = Filter(name: characterName, index: pageIndex);
+                  _bloc.add(ActionGetCharacters(filter: filter));
+                }
               : null,
         ),
-        const SizedBox(width: 20,),
+        const SizedBox(
+          width: 20,
+        ),
         Text('Page $pageIndex'),
-        const SizedBox(width: 20,),
+        const SizedBox(
+          width: 20,
+        ),
         IconButton(
           icon: const Icon(Icons.arrow_forward),
           onPressed: count > pageIndex * 10
               ? () {
-            setState(() {
-              pageIndex++;
-            });
-            filter = Filter(name: characterName, index: pageIndex);
-            _bloc.add(ActionGetCharacters(filter: filter));
-          }
+                  setState(() {
+                    pageIndex++;
+                  });
+                  filter = Filter(name: characterName, index: pageIndex);
+                  _bloc.add(ActionGetCharacters(filter: filter));
+                }
               : null,
         ),
       ],

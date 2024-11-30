@@ -8,6 +8,6 @@ abstract class Character extends Entity {
   Character({
     required this.id,
     required this.name,
-    required this.isFavorite
+    required this.isFavorite,
   });
 }
