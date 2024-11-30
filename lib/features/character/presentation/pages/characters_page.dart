@@ -57,6 +57,12 @@ class _CharactersPageState extends State<CharactersPage> {
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Colors.grey.shade100,
+      appBar: AppBar(
+        title: const Text('Personajes', style: TextStyle(color: Colors.white),),
+        centerTitle: true,
+        backgroundColor: Colors.deepPurple,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -102,10 +108,20 @@ class _CharactersPageState extends State<CharactersPage> {
       return const Center(child: CircularProgressIndicator());
     }
     if (state is OnGetCharactersFailure) {
-      return const Center(child: Text('¡Ups! Algo salió mal.'));
+      return const Center(
+        child: Text(
+          '¡Ups! Algo salió mal.',
+          style: TextStyle(color: Colors.redAccent, fontSize: 16),
+        ),
+      );
     }
     if (count == 0) {
-      return const Center(child: Text('No se encontraron resultados.'));
+      return const Center(
+        child: Text(
+          'No se encontraron resultados.',
+          style: TextStyle(color: Colors.grey, fontSize: 16),
+        ),
+      );
     }
     return Column(
       children: [
@@ -133,7 +149,17 @@ class _CharactersPageState extends State<CharactersPage> {
     return Expanded(
       child: TextField(
         controller: _textController,
-        decoration: const InputDecoration(hintText: 'Nombre del personaje...'),
+        decoration: InputDecoration(
+          hintText: 'Buscar personaje...',
+          hintStyle: const TextStyle(color: Colors.grey),
+          filled: true,
+          fillColor: Colors.white,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide.none,
+          ),
+          prefixIcon: const Icon(Icons.search, color: Colors.grey),
+        ),
         onChanged: (value) {
           _debounce?.cancel();
           _debounce = Timer(const Duration(milliseconds: 500), () {
@@ -146,8 +172,16 @@ class _CharactersPageState extends State<CharactersPage> {
 
   ElevatedButton _buildFavoritesButton() {
     return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.deepPurple,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      ),
       onPressed: _navigateToFavorites,
-      child: const Text('Show Favorites'),
+      child: const Text(
+        'Favoritos',
+        style: TextStyle(color: Colors.white),
+      ),
     );
   }
 
@@ -164,15 +198,20 @@ class _CharactersPageState extends State<CharactersPage> {
       children: [
         IconButton(
           icon: const Icon(Icons.arrow_back),
+          color: Colors.deepPurple,
           onPressed: pageIndex > 1
               ? () => _updateCharacters(characterName, pageIndex - 1)
               : null,
         ),
         const SizedBox(width: 20),
-        Text('Page $pageIndex'),
+        Text(
+          'Página $pageIndex',
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
         const SizedBox(width: 20),
         IconButton(
           icon: const Icon(Icons.arrow_forward),
+          color: Colors.deepPurple,
           onPressed: count > pageIndex * 10
               ? () => _updateCharacters(characterName, pageIndex + 1)
               : null,
@@ -188,12 +227,17 @@ class _CharactersPageState extends State<CharactersPage> {
         crossAxisCount: 2,
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
-        childAspectRatio: 0.8,
+        childAspectRatio: 0.75,
       ),
       itemCount: itemCount,
       itemBuilder: (context, index) {
         final character = characters[index];
         return Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          elevation: 4,
+          shadowColor: Colors.deepPurple.withOpacity(0.3),
           child: CharacterWidget(character: character),
         );
       },
