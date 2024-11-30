@@ -16,6 +16,7 @@ part 'character_event.dart';
 
 part 'character_state.dart';
 
+@lazySingleton
 @injectable
 class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
   final GetCharactersUseCase getCharactersUseCase;

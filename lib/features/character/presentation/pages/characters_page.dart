@@ -65,8 +65,6 @@ class _CharactersPageState extends State<CharactersPage> {
   }
 
   void listener(context, state) {
-    print(state.runtimeType);
-
     if (state is OnGetCharacters) {
       characters = state.response.characters;
       count = state.response.count;

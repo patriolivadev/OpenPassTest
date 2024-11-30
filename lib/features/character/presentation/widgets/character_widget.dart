@@ -29,8 +29,7 @@ class _CharacterWidgetState extends State<CharacterWidget> {
     );
   }
 
-  listener(context, state) {
-  }
+  listener(context, state) {}
 
   Widget builder(context, state) {
     return Padding(
