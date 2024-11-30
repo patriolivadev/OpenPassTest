@@ -198,26 +198,36 @@ class _CharactersPageState extends State<CharactersPage> {
     );
   }
 
-  Row _buildPager() {
+  Widget _buildPager() {
     int totalPages = (count / 10).ceil();
-    const int maxButtons = 5;
+    const int buttonWidth = 50;
+    const int spacing = 8;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        double availableWidth = constraints.maxWidth -
+            (4 * (buttonWidth + spacing));
 
-    int startPage = (pageIndex - (maxButtons ~/ 2)).clamp(1, totalPages);
-    int endPage = (startPage + maxButtons - 1).clamp(1, totalPages);
+        int maxButtons =
+        (availableWidth / (buttonWidth + spacing)).floor().clamp(1, 5);
 
-    if (endPage - startPage < maxButtons - 1) {
-      startPage = (endPage - maxButtons + 1).clamp(1, totalPages);
-    }
+        int startPage = (pageIndex - (maxButtons ~/ 2)).clamp(1, totalPages);
+        int endPage = (startPage + maxButtons - 1).clamp(1, totalPages);
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        firstPageButton(),
-        previousPageButton(),
-        ...pagesButtonsRow(endPage, startPage),
-        nextPageButton(totalPages),
-        lastPageButton(totalPages),
-      ],
+        if (endPage - startPage < maxButtons - 1) {
+          startPage = (endPage - maxButtons + 1).clamp(1, totalPages);
+        }
+
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            firstPageButton(),
+            previousPageButton(),
+            ...pagesButtonsRow(endPage, startPage),
+            nextPageButton(totalPages),
+            lastPageButton(totalPages),
+          ],
+        );
+      },
     );
   }
 
@@ -229,7 +239,7 @@ class _CharactersPageState extends State<CharactersPage> {
       ),
       color: pageIndex > 1 ? Colors.white : AppThemes.backgroundColor,
       onPressed:
-          pageIndex > 1 ? () => _updateCharacters(characterName, 1) : null,
+      pageIndex > 1 ? () => _updateCharacters(characterName, 1) : null,
     );
   }
 
@@ -246,14 +256,14 @@ class _CharactersPageState extends State<CharactersPage> {
   List<Widget> pagesButtonsRow(int endPage, int startPage) {
     return List.generate(
       endPage - startPage + 1,
-      (index) {
+          (index) {
         int page = startPage + index;
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4.0),
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               disabledBackgroundColor:
-                  page == pageIndex ? AppThemes.primary : AppThemes.backgroundColor,
+              page == pageIndex ? AppThemes.primary : AppThemes.backgroundColor,
               elevation: page == pageIndex ? 0 : 5,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
@@ -268,7 +278,7 @@ class _CharactersPageState extends State<CharactersPage> {
               style: TextStyle(
                 color: page == pageIndex ? Colors.white : Colors.black,
                 fontWeight:
-                    page == pageIndex ? FontWeight.bold : FontWeight.normal,
+                page == pageIndex ? FontWeight.bold : FontWeight.normal,
               ),
             ),
           ),
@@ -299,6 +309,7 @@ class _CharactersPageState extends State<CharactersPage> {
           : null,
     );
   }
+
 
   Widget _buildCharacterList() {
     final itemCount = (pageIndex * 10 <= count) ? 10 : count % 10;
