@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_pass_test_oliva_patricio/core/services/dependencies_service.dart';
+import 'package:open_pass_test_oliva_patricio/core/themes.dart';
 import 'package:open_pass_test_oliva_patricio/features/character/presentation/manager/character_bloc.dart';
 import 'package:open_pass_test_oliva_patricio/features/character/presentation/widgets/character_widget.dart';
 
@@ -35,7 +36,7 @@ class _FavoriteCharactersPageState extends State<FavoriteCharactersPage> {
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: AppThemes.primary,
         foregroundColor: Colors.white,
       ),
       body: Padding(
@@ -113,7 +114,7 @@ class _FavoriteCharactersPageState extends State<FavoriteCharactersPage> {
             borderRadius: BorderRadius.circular(10),
           ),
           elevation: 4,
-          shadowColor: Colors.deepPurple.withOpacity(0.3),
+          shadowColor: AppThemes.primary.withOpacity(0.3),
           child: CharacterWidget(character: character),
         );
       },

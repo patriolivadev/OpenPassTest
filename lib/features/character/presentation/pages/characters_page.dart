@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_pass_test_oliva_patricio/core/entities/filter.dart';
 import 'package:open_pass_test_oliva_patricio/core/services/dependencies_service.dart';
+import 'package:open_pass_test_oliva_patricio/core/themes.dart';
 import 'package:open_pass_test_oliva_patricio/features/character/presentation/manager/character_bloc.dart';
 import 'package:open_pass_test_oliva_patricio/features/character/presentation/pages/favorite_characters_page.dart';
 import 'package:open_pass_test_oliva_patricio/features/character/presentation/widgets/character_widget.dart';
@@ -59,9 +60,12 @@ class _CharactersPageState extends State<CharactersPage> {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        title: const Text('Personajes', style: TextStyle(color: Colors.white),),
+        title: const Text(
+          'Personajes',
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: AppThemes.primary,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -173,7 +177,7 @@ class _CharactersPageState extends State<CharactersPage> {
   ElevatedButton _buildFavoritesButton() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: AppThemes.primary,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       ),
@@ -193,30 +197,104 @@ class _CharactersPageState extends State<CharactersPage> {
   }
 
   Row _buildPager() {
+    int totalPages = (count / 10).ceil();
+    const int maxButtons = 5;
+
+    int startPage = (pageIndex - (maxButtons ~/ 2)).clamp(1, totalPages);
+    int endPage = (startPage + maxButtons - 1).clamp(1, totalPages);
+
+    if (endPage - startPage < maxButtons - 1) {
+      startPage = (endPage - maxButtons + 1).clamp(1, totalPages);
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        IconButton(
-          icon: const Icon(Icons.arrow_back),
-          color: Colors.deepPurple,
-          onPressed: pageIndex > 1
-              ? () => _updateCharacters(characterName, pageIndex - 1)
-              : null,
-        ),
-        const SizedBox(width: 20),
-        Text(
-          'Página $pageIndex',
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(width: 20),
-        IconButton(
-          icon: const Icon(Icons.arrow_forward),
-          color: Colors.deepPurple,
-          onPressed: count > pageIndex * 10
-              ? () => _updateCharacters(characterName, pageIndex + 1)
-              : null,
-        ),
+        firstPageButton(),
+        previousPageButton(),
+        ...pagesButtonsRow(endPage, startPage),
+        nextPageButton(totalPages),
+        lastPageButton(totalPages),
       ],
+    );
+  }
+
+  IconButton firstPageButton() {
+    return IconButton(
+      icon: const Icon(
+        Icons.first_page,
+        size: 30,
+      ),
+      color: pageIndex > 1 ? AppThemes.primary : Colors.grey.shade400,
+      onPressed:
+          pageIndex > 1 ? () => _updateCharacters(characterName, 1) : null,
+    );
+  }
+
+  IconButton previousPageButton() {
+    return IconButton(
+      icon: const Icon(Icons.arrow_back_ios),
+      color: pageIndex > 1 ? AppThemes.primary : Colors.grey.shade400,
+      onPressed: pageIndex > 1
+          ? () => _updateCharacters(characterName, pageIndex - 1)
+          : null,
+    );
+  }
+
+  List<Widget> pagesButtonsRow(int endPage, int startPage) {
+    return List.generate(
+      endPage - startPage + 1,
+      (index) {
+        int page = startPage + index;
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              disabledBackgroundColor:
+                  page == pageIndex ? AppThemes.primary : Colors.grey.shade300,
+              elevation: page == pageIndex ? 0 : 5,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            ),
+            onPressed: page != pageIndex
+                ? () => _updateCharacters(characterName, page)
+                : null,
+            child: Text(
+              '$page',
+              style: TextStyle(
+                color: page == pageIndex ? Colors.white : Colors.black,
+                fontWeight:
+                    page == pageIndex ? FontWeight.bold : FontWeight.normal,
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  IconButton nextPageButton(int totalPages) {
+    return IconButton(
+      icon: const Icon(Icons.arrow_forward_ios),
+      color: pageIndex < totalPages ? AppThemes.primary : Colors.grey.shade400,
+      onPressed: pageIndex < totalPages
+          ? () => _updateCharacters(characterName, pageIndex + 1)
+          : null,
+    );
+  }
+
+  IconButton lastPageButton(int totalPages) {
+    return IconButton(
+      icon: const Icon(
+        Icons.last_page,
+        size: 30,
+      ),
+      color: pageIndex < totalPages ? AppThemes.primary : Colors.grey.shade400,
+      onPressed: pageIndex < totalPages
+          ? () => _updateCharacters(characterName, totalPages)
+          : null,
     );
   }
 
@@ -237,11 +315,10 @@ class _CharactersPageState extends State<CharactersPage> {
             borderRadius: BorderRadius.circular(10),
           ),
           elevation: 4,
-          shadowColor: Colors.deepPurple.withOpacity(0.3),
+          shadowColor: AppThemes.primary.withOpacity(0.3),
           child: CharacterWidget(character: character),
         );
       },
     );
   }
-
 }
