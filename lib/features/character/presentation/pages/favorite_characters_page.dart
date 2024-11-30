@@ -13,12 +13,15 @@ class FavoriteCharactersPage extends StatefulWidget {
 
 class _FavoriteCharactersPageState extends State<FavoriteCharactersPage> {
   final CharacterBloc _bloc = getIt<CharacterBloc>();
-
-  List characters = [];
+  final List characters = [];
 
   @override
   void initState() {
     super.initState();
+    _fetchFavoriteCharacters();
+  }
+
+  void _fetchFavoriteCharacters() {
     _bloc.add(ActionGetFavoriteCharacters());
   }
 
@@ -31,70 +34,54 @@ class _FavoriteCharactersPageState extends State<FavoriteCharactersPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: BlocConsumer<CharacterBloc, CharacterState>(
-                bloc: _bloc,
-                builder: builder,
-                listener: listener,
-              ),
-            ),
-          ],
+        child: BlocConsumer<CharacterBloc, CharacterState>(
+          bloc: _bloc,
+          builder: builder,
+          listener: listener,
         ),
       ),
     );
   }
 
-  void listener(context, state) {
+  void listener(BuildContext context, CharacterState state) {
     if (state is OnGetFavoriteCharacters) {
-      characters = state.characters;
+      characters
+        ..clear()
+        ..addAll(state.characters);
       setState(() {});
+    } else if (state is OnSaveFavoriteCharacter) {
+      _updateFavoriteStatus(state.id, true);
+    } else if (state is OnRemoveFavoriteCharacter) {
+      _removeCharacter(state.id);
     }
+  }
 
-    if (state is OnSaveFavoriteCharacter) {
-      for (var element in characters) {
-        if (element.id == state.id) {
-          element.isFavorite = true;
-        }
+  void _updateFavoriteStatus(int id, bool isFavorite) {
+    for (final character in characters) {
+      if (character.id == id) {
+        character.isFavorite = isFavorite;
       }
     }
-
-    if (state is OnRemoveFavoriteCharacter) {
-      characters.removeWhere((element) => element.id == state.id);
-      setState(() {});
-    }
-
+    setState(() {});
   }
 
-  Widget builder(context, state) {
+  void _removeCharacter(int id) {
+    characters.removeWhere((character) => character.id == id);
+    setState(() {});
+  }
+
+  Widget builder(BuildContext context, CharacterState state) {
     if (state is OnLoading) {
       return const Center(child: CircularProgressIndicator());
+    } else if (state is OnGetCharactersFailure) {
+      return const Center(child: Text('¡Ups! Algo salió mal.'));
+    } else if (characters.isEmpty) {
+      return const Center(child: Text('Aún no hay favoritos guardados.'));
     }
-
-    if (state is OnGetCharactersFailure) {
-      return const Center(
-        child: Text('¡Ups! Algo salió mal.'),
-      );
-    }
-
-    if (characters.isEmpty) {
-      return const Center(
-        child: Text('Aún no hay favoritos guardados.'),
-      );
-    }
-
-    return Column(
-      children: [
-        Expanded(child: buildList()),
-        const SizedBox(
-          height: 10,
-        ),
-      ],
-    );
+    return _buildCharacterList();
   }
 
-  Widget buildList() {
+  Widget _buildCharacterList() {
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,

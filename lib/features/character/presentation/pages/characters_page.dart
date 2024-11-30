@@ -27,7 +27,6 @@ class _CharactersPageState extends State<CharactersPage> {
   Timer? _debounce;
   late Size size;
 
-
   @override
   void initState() {
     super.initState();
@@ -67,8 +66,8 @@ class _CharactersPageState extends State<CharactersPage> {
             Expanded(
               child: BlocConsumer<CharacterBloc, CharacterState>(
                 bloc: _bloc,
-                builder: _buildState,
-                listener: _handleStateChanges,
+                builder: builder,
+                listener: listener,
               ),
             ),
           ],
@@ -77,7 +76,7 @@ class _CharactersPageState extends State<CharactersPage> {
     );
   }
 
-  void _handleStateChanges(BuildContext context, CharacterState state) {
+  void listener(BuildContext context, CharacterState state) {
     if (state is OnGetCharacters) {
       characters = state.response.characters;
       count = state.response.count;
@@ -98,7 +97,7 @@ class _CharactersPageState extends State<CharactersPage> {
     }
   }
 
-  Widget _buildState(BuildContext context, CharacterState state) {
+  Widget builder(BuildContext context, CharacterState state) {
     if (state is OnLoading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -119,8 +118,7 @@ class _CharactersPageState extends State<CharactersPage> {
 
   Widget _buildHeader() {
     return Padding(
-      padding: EdgeInsets.symmetric(
-          horizontal: size.width * 0.04),
+      padding: EdgeInsets.symmetric(horizontal: size.width * 0.04),
       child: Row(
         children: [
           _buildSearchField(),
