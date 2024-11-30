@@ -72,10 +72,20 @@ class _CharactersPageState extends State<CharactersPage> {
       count = state.response.count;
     }
 
-    if (state is OnSaveFavoriteCharacter){
-      characters.where((element) => element.id == state.id,);
+    if (state is OnSaveFavoriteCharacter) {
+      for (var element in characters) {
+        if (element.id == state.id) {
+          element.isFavorite = true;
+        }
+      }
     }
+
     if (state is OnRemoveFavoriteCharacter){
+      for (var element in characters) {
+        if (element.id == state.id) {
+          element.isFavorite = false;
+        }
+      }
     }
 
     setState(() {});
