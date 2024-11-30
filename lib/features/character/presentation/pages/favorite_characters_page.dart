@@ -61,12 +61,10 @@ class _FavoriteCharactersPageState extends State<FavoriteCharactersPage> {
     }
 
     if (state is OnRemoveFavoriteCharacter) {
-      for (var element in characters) {
-        if (element.id == state.id) {
-          element.isFavorite = false;
-        }
-      }
+      characters.removeWhere((element) => element.id == state.id);
+      setState(() {});
     }
+
   }
 
   Widget builder(context, state) {
