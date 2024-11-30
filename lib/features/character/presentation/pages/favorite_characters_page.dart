@@ -28,9 +28,15 @@ class _FavoriteCharactersPageState extends State<FavoriteCharactersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        title: const Text('Favoritos'),
+        title: const Text(
+          'Favoritos',
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
+        backgroundColor: Colors.deepPurple,
+        foregroundColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -74,9 +80,19 @@ class _FavoriteCharactersPageState extends State<FavoriteCharactersPage> {
     if (state is OnLoading) {
       return const Center(child: CircularProgressIndicator());
     } else if (state is OnGetCharactersFailure) {
-      return const Center(child: Text('¡Ups! Algo salió mal.'));
+      return const Center(
+        child: Text(
+          '¡Ups! Algo salió mal.',
+          style: TextStyle(color: Colors.redAccent, fontSize: 16),
+        ),
+      );
     } else if (characters.isEmpty) {
-      return const Center(child: Text('Aún no hay favoritos guardados.'));
+      return const Center(
+        child: Text(
+          'Aún no hay favoritos guardados.',
+          style: TextStyle(color: Colors.grey, fontSize: 16),
+        ),
+      );
     }
     return _buildCharacterList();
   }
@@ -84,7 +100,7 @@ class _FavoriteCharactersPageState extends State<FavoriteCharactersPage> {
   Widget _buildCharacterList() {
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: 300,
+        maxCrossAxisExtent: 500,
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
         childAspectRatio: 0.75,
@@ -93,6 +109,11 @@ class _FavoriteCharactersPageState extends State<FavoriteCharactersPage> {
       itemBuilder: (context, index) {
         final character = characters[index];
         return Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          elevation: 4,
+          shadowColor: Colors.deepPurple.withOpacity(0.3),
           child: CharacterWidget(character: character),
         );
       },
