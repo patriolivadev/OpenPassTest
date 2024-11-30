@@ -58,14 +58,16 @@ class _CharactersPageState extends State<CharactersPage> {
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: const Text(
           'Personajes',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(
+            color: Colors.white,
+          ),
         ),
         centerTitle: true,
-        backgroundColor: AppThemes.primary,
+        backgroundColor: AppThemes.backgroundColor,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -225,7 +227,7 @@ class _CharactersPageState extends State<CharactersPage> {
         Icons.first_page,
         size: 30,
       ),
-      color: pageIndex > 1 ? AppThemes.primary : Colors.grey.shade400,
+      color: pageIndex > 1 ? Colors.white : AppThemes.backgroundColor,
       onPressed:
           pageIndex > 1 ? () => _updateCharacters(characterName, 1) : null,
     );
@@ -234,7 +236,7 @@ class _CharactersPageState extends State<CharactersPage> {
   IconButton previousPageButton() {
     return IconButton(
       icon: const Icon(Icons.arrow_back_ios),
-      color: pageIndex > 1 ? AppThemes.primary : Colors.grey.shade400,
+      color: pageIndex > 1 ? Colors.white : AppThemes.backgroundColor,
       onPressed: pageIndex > 1
           ? () => _updateCharacters(characterName, pageIndex - 1)
           : null,
@@ -251,7 +253,7 @@ class _CharactersPageState extends State<CharactersPage> {
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               disabledBackgroundColor:
-                  page == pageIndex ? AppThemes.primary : Colors.grey.shade300,
+                  page == pageIndex ? AppThemes.primary : AppThemes.backgroundColor,
               elevation: page == pageIndex ? 0 : 5,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
@@ -278,7 +280,7 @@ class _CharactersPageState extends State<CharactersPage> {
   IconButton nextPageButton(int totalPages) {
     return IconButton(
       icon: const Icon(Icons.arrow_forward_ios),
-      color: pageIndex < totalPages ? AppThemes.primary : Colors.grey.shade400,
+      color: pageIndex < totalPages ? Colors.white : AppThemes.backgroundColor,
       onPressed: pageIndex < totalPages
           ? () => _updateCharacters(characterName, pageIndex + 1)
           : null,
@@ -291,7 +293,7 @@ class _CharactersPageState extends State<CharactersPage> {
         Icons.last_page,
         size: 30,
       ),
-      color: pageIndex < totalPages ? AppThemes.primary : Colors.grey.shade400,
+      color: pageIndex < totalPages ? Colors.white : AppThemes.backgroundColor,
       onPressed: pageIndex < totalPages
           ? () => _updateCharacters(characterName, totalPages)
           : null,
@@ -311,6 +313,7 @@ class _CharactersPageState extends State<CharactersPage> {
       itemBuilder: (context, index) {
         final character = characters[index];
         return Card(
+          color: AppThemes.backgroundColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),

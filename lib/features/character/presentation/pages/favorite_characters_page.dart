@@ -29,7 +29,7 @@ class _FavoriteCharactersPageState extends State<FavoriteCharactersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: const Text(
           'Favoritos',
@@ -110,6 +110,7 @@ class _FavoriteCharactersPageState extends State<FavoriteCharactersPage> {
       itemBuilder: (context, index) {
         final character = characters[index];
         return Card(
+          color: AppThemes.backgroundColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),

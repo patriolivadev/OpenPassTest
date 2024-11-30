@@ -39,7 +39,11 @@ class CharacterWidget extends StatelessWidget {
             child: Center(
               child: Text(
                 character.name,
-                style: const TextStyle(fontSize: 25),
+                style: const TextStyle(
+                  fontSize: 25,
+                  fontFamily: 'Arial',
+                  color: Colors.white
+                ),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -47,7 +51,7 @@ class CharacterWidget extends StatelessWidget {
           IconButton(
             icon: Icon(
               character.isFavorite ? Icons.star : Icons.star_border,
-              color: character.isFavorite ? Colors.yellow : null,
+              color: character.isFavorite ? Colors.yellow : Colors.white,
               size: 40,
             ),
             onPressed: () => _toggleFavorite(bloc),
