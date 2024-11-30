@@ -223,8 +223,8 @@ class _CharactersPageState extends State<CharactersPage> {
   Widget _buildCharacterList() {
     final itemCount = (pageIndex * 10 <= count) ? 10 : count % 10;
     return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
+      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: 500,
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
         childAspectRatio: 0.75,
@@ -243,4 +243,5 @@ class _CharactersPageState extends State<CharactersPage> {
       },
     );
   }
+
 }

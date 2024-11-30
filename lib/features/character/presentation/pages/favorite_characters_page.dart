@@ -83,11 +83,11 @@ class _FavoriteCharactersPageState extends State<FavoriteCharactersPage> {
 
   Widget _buildCharacterList() {
     return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
+      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: 300,
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
-        childAspectRatio: 0.8,
+        childAspectRatio: 0.75,
       ),
       itemCount: characters.length,
       itemBuilder: (context, index) {
