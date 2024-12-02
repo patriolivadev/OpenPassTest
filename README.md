@@ -4,7 +4,7 @@
 1. Copia la URL del repositorio desde **GitHub**.
 2. Navega a la ubicación deseada en tu máquina y abre una terminal.
 3. Ejecuta el siguiente comando:  
-   git clone <url>
+   git clone -url-
 
 ---
 
