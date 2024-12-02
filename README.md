@@ -1,16 +1,37 @@
-# open_pass_test_oliva_patricio
+# 🛠️ Instrucciones para clonar y ejecutar el proyecto
 
-A new Flutter project.
+## 🚀 Clonar el repositorio
+1. Copia la URL del repositorio desde **GitHub**.
+2. Navega a la ubicación deseada en tu máquina y abre una terminal.
+3. Ejecuta el siguiente comando:  
+   git clone <url>
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 📂 Abrir el proyecto
+- Usa el IDE de tu preferencia: **Android Studio** o **Visual Studio Code**.
+- Abre el proyecto desde la carpeta clonada.
 
-A few resources to get you started if this is your first Flutter project:
+---
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## ▶️ Ejecutar el proyecto
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Asegúrate de estar en la rama `master`:  
+   git checkout master
+
+2. Selecciona el dispositivo **Chrome (web)**.
+
+3. Ejecuta el proyecto:
+    - **Android Studio**: Presiona el botón **Run**.
+    - **Visual Studio Code**: Usa el comando:  
+      flutter run -d chrome
+
+---
+
+## ℹ️ Nota importante
+Antes de ejecutar, instala las dependencias necesarias con el comando:  
+flutter pub get
+
+## ℹ️ Nota importante
+Para correr los test solo ejecute el siguiente comando:
+flutter test

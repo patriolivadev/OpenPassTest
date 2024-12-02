@@ -1,14 +1,17 @@
 import 'package:injectable/injectable.dart';
 import 'package:open_pass_test_oliva_patricio/core/services/http_service.dart';
+import 'package:open_pass_test_oliva_patricio/features/character/data/data_sources/character_local_data_source.dart';
 import 'package:open_pass_test_oliva_patricio/features/character/data/models/character_model.dart';
 import 'package:open_pass_test_oliva_patricio/core/entities/filter.dart';
 import 'package:open_pass_test_oliva_patricio/features/character/domain/entities/characters_response.dart';
 
 abstract class CharacterRemoteDataSourceBase {
   final HttpServiceBase http;
+  final CharacterLocalDataSourceBase local;
 
   CharacterRemoteDataSourceBase({
     required this.http,
+    required this.local,
   });
 
   Future<CharactersResponse> getCharacters(Filter filter);
@@ -18,6 +21,7 @@ abstract class CharacterRemoteDataSourceBase {
 class CharacterRemoteDataSource extends CharacterRemoteDataSourceBase {
   CharacterRemoteDataSource({
     required super.http,
+    required super.local,
   });
 
   @override
@@ -26,9 +30,16 @@ class CharacterRemoteDataSource extends CharacterRemoteDataSourceBase {
 
     final result = await http.get(url);
 
-    List<CharacterModel> characters = (result['results'] as List)
-        .map((characterJson) => CharacterModel.fromJson(Map<String, dynamic>.from(characterJson)))
-        .toList();
+    List<CharacterModel> characters = await Future.wait(
+      (result['results'] as List).map(
+            (characterJson) async {
+          return await CharacterModel.fromJson(
+            Map<String, dynamic>.from(characterJson),
+            local
+          );
+        },
+      ),
+    );
 
     int count = result['count'];
 
@@ -36,4 +47,5 @@ class CharacterRemoteDataSource extends CharacterRemoteDataSourceBase {
 
     return response;
   }
+
 }
