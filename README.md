@@ -31,3 +31,7 @@
 ## ℹ️ Nota importante
 Antes de ejecutar, instala las dependencias necesarias con el comando:  
 flutter pub get
+
+## ℹ️ Nota importante
+Para correr los test solo ejecute el siguiente comando:
+flutter test
