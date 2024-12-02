@@ -65,16 +65,16 @@ extension GetItInjectableX on _i174.GetIt {
           remote: gh<_i437.CharacterRemoteDataSourceBase>(),
           local: gh<_i583.CharacterLocalDataSourceBase>(),
         ));
-    gh.factory<_i518.GetCharactersUseCase>(() => _i518.GetCharactersUseCase(
-        repository: gh<_i701.CharacterRepositoryBase>()));
-    gh.factory<_i864.GetFavoriteCharactersUseCase>(() =>
-        _i864.GetFavoriteCharactersUseCase(
+    gh.factory<_i608.SaveFavoriteCharacterUseCase>(() =>
+        _i608.SaveFavoriteCharacterUseCase(
             repository: gh<_i701.CharacterRepositoryBase>()));
     gh.factory<_i453.RemoveFavoriteCharacterUseCase>(() =>
         _i453.RemoveFavoriteCharacterUseCase(
             repository: gh<_i701.CharacterRepositoryBase>()));
-    gh.factory<_i608.SaveFavoriteCharacterUseCase>(() =>
-        _i608.SaveFavoriteCharacterUseCase(
+    gh.factory<_i518.GetCharactersUseCase>(() => _i518.GetCharactersUseCase(
+        repository: gh<_i701.CharacterRepositoryBase>()));
+    gh.factory<_i864.GetFavoriteCharactersUseCase>(() =>
+        _i864.GetFavoriteCharactersUseCase(
             repository: gh<_i701.CharacterRepositoryBase>()));
     gh.lazySingleton<_i932.CharacterBloc>(() => _i932.CharacterBloc(
           getCharactersUseCase: gh<_i518.GetCharactersUseCase>(),
