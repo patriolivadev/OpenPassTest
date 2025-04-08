@@ -40,10 +40,7 @@ class CharacterWidget extends StatelessWidget {
               child: Text(
                 character.name,
                 style: const TextStyle(
-                  fontSize: 25,
-                  fontFamily: 'Arial',
-                  color: Colors.white
-                ),
+                    fontSize: 25, fontFamily: 'Arial', color: Colors.white),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -76,7 +73,7 @@ class CharacterWidget extends StatelessWidget {
   }
 
   String _getCharacterImageUrl() {
-    return 'https://starwars-visualguide.com/assets/img/characters/${character.id}.jpg';
+    return 'https://imgs.search.brave.com/6JjBSDkaqFqQgqKPIQBTyEVDWFvFpRMED9wlQjtAhiM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9sb2dv/ZG93bmxvYWQub3Jn/L3dwLWNvbnRlbnQv/dXBsb2Fkcy8yMDE1/LzEyL3N0YXItd2Fy/cy1sb2dvLTAucG5n';
   }
 
   void _toggleFavorite(CharacterBloc bloc) {
