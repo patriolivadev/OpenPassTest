@@ -1,21 +1,19 @@
-import 'dart:convert';
-
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:http/http.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:open_pass_test_oliva_patricio/core/services/http_service.dart';
+import 'package:open_pass_test_oliva_patricio/core/services/dio_service.dart';
 
 import 'http_service_test.mocks.dart';
 
-@GenerateMocks([Client])
+@GenerateMocks([Dio])
 void main() {
-  late MockClient mockClient;
-  late HttpService httpService;
+  late MockDio mockDio;
+  late DioService httpService;
 
   setUp(() {
-    mockClient = MockClient();
-    httpService = HttpService(http: mockClient);
+    mockDio = MockDio();
+    httpService = DioService(dio: mockDio);
   });
 
   group('HttpService', () {
@@ -23,19 +21,27 @@ void main() {
     final tResponseJson = {'key': 'value'};
 
     test('debe realizar una solicitud GET exitosa y retornar el cuerpo decodificado', () async {
-      when(mockClient.get(Uri.parse(tUrl))).thenAnswer(
-            (_) async => Response(json.encode(tResponseJson), 200),
+      when(mockDio.get(tUrl)).thenAnswer(
+            (_) async => Response(
+          data: tResponseJson,
+          statusCode: 200,
+          requestOptions: RequestOptions(path: tUrl),
+        ),
       );
 
       final result = await httpService.get(tUrl);
 
-      verify(mockClient.get(Uri.parse(tUrl))).called(1);
+      verify(mockDio.get(tUrl)).called(1);
       expect(result, tResponseJson);
     });
 
     test('debe lanzar una excepción si el código de estado no es 200', () async {
-      when(mockClient.get(Uri.parse(tUrl))).thenAnswer(
-            (_) async => Response('Error', 404),
+      when(mockDio.get(tUrl)).thenAnswer(
+            (_) async => Response(
+          data: 'Error',
+          statusCode: 404,
+          requestOptions: RequestOptions(path: tUrl),
+        ),
       );
 
       expect(
@@ -43,18 +49,18 @@ void main() {
         throwsA(isA<Exception>()),
       );
 
-      verify(mockClient.get(Uri.parse(tUrl))).called(1);
+      verify(mockDio.get(tUrl)).called(1);
     });
 
     test('debe lanzar una excepción si ocurre un error durante la solicitud', () async {
-      when(mockClient.get(Uri.parse(tUrl))).thenThrow(Exception('Error de red'));
+      when(mockDio.get(tUrl)).thenThrow(Exception('Error de red'));
 
       expect(
             () => httpService.get(tUrl),
         throwsA(isA<Exception>()),
       );
 
-      verify(mockClient.get(Uri.parse(tUrl))).called(1);
+      verify(mockDio.get(tUrl)).called(1);
     });
   });
 }

@@ -38,6 +38,7 @@ dependencies:
   get_it: ^7.6.7
   intl: ^0.19.0
   bloc_test: ^9.1.7
+  dio: ^5.4.0 # o la versión más reciente
 
 
   # The following adds the Cupertino Icons font to your application.

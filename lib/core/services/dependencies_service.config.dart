@@ -8,12 +8,12 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:dio/dio.dart' as _i361;
 import 'package:get_it/get_it.dart' as _i174;
-import 'package:http/http.dart' as _i519;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:open_pass_test_oliva_patricio/core/services/dependencies_service.dart'
     as _i157;
-import 'package:open_pass_test_oliva_patricio/core/services/http_service.dart'
+import 'package:open_pass_test_oliva_patricio/core/services/dio_service.dart'
     as _i355;
 import 'package:open_pass_test_oliva_patricio/features/character/data/data_sources/character_local_data_source.dart'
     as _i583;
@@ -47,34 +47,34 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final injectableModule = _$InjectableModule();
-    gh.lazySingleton<_i519.Client>(() => injectableModule.client);
+    gh.lazySingleton<_i361.Dio>(() => injectableModule.dio);
     await gh.lazySingletonAsync<_i460.SharedPreferences>(
       () => injectableModule.sharedPreferences,
       preResolve: true,
     );
-    gh.factory<_i355.HttpServiceBase>(
-        () => _i355.HttpService(http: gh<_i519.Client>()));
     gh.factory<_i583.CharacterLocalDataSourceBase>(() =>
         _i583.CharacterLocalDataSource(prefs: gh<_i460.SharedPreferences>()));
+    gh.factory<_i355.DioServiceBase>(
+        () => _i355.DioService(dio: gh<_i361.Dio>()));
     gh.factory<_i437.CharacterRemoteDataSourceBase>(
         () => _i437.CharacterRemoteDataSource(
-              http: gh<_i355.HttpServiceBase>(),
+              http: gh<_i355.DioServiceBase>(),
               local: gh<_i583.CharacterLocalDataSourceBase>(),
             ));
     gh.factory<_i701.CharacterRepositoryBase>(() => _i756.CharacterRepository(
           remote: gh<_i437.CharacterRemoteDataSourceBase>(),
           local: gh<_i583.CharacterLocalDataSourceBase>(),
         ));
-    gh.factory<_i608.SaveFavoriteCharacterUseCase>(() =>
-        _i608.SaveFavoriteCharacterUseCase(
-            repository: gh<_i701.CharacterRepositoryBase>()));
-    gh.factory<_i453.RemoveFavoriteCharacterUseCase>(() =>
-        _i453.RemoveFavoriteCharacterUseCase(
-            repository: gh<_i701.CharacterRepositoryBase>()));
     gh.factory<_i518.GetCharactersUseCase>(() => _i518.GetCharactersUseCase(
         repository: gh<_i701.CharacterRepositoryBase>()));
     gh.factory<_i864.GetFavoriteCharactersUseCase>(() =>
         _i864.GetFavoriteCharactersUseCase(
+            repository: gh<_i701.CharacterRepositoryBase>()));
+    gh.factory<_i453.RemoveFavoriteCharacterUseCase>(() =>
+        _i453.RemoveFavoriteCharacterUseCase(
+            repository: gh<_i701.CharacterRepositoryBase>()));
+    gh.factory<_i608.SaveFavoriteCharacterUseCase>(() =>
+        _i608.SaveFavoriteCharacterUseCase(
             repository: gh<_i701.CharacterRepositoryBase>()));
     gh.lazySingleton<_i932.CharacterBloc>(() => _i932.CharacterBloc(
           getCharactersUseCase: gh<_i518.GetCharactersUseCase>(),

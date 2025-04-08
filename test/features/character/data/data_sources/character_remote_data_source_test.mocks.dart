@@ -5,9 +5,9 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i4;
 
-import 'package:http/http.dart' as _i2;
+import 'package:dio/dio.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:open_pass_test_oliva_patricio/core/services/http_service.dart'
+import 'package:open_pass_test_oliva_patricio/core/services/dio_service.dart'
     as _i3;
 import 'package:open_pass_test_oliva_patricio/features/character/data/data_sources/character_local_data_source.dart'
     as _i5;
@@ -27,8 +27,8 @@ import 'package:open_pass_test_oliva_patricio/features/character/domain/entities
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeClient_0 extends _i1.SmartFake implements _i2.Client {
-  _FakeClient_0(
+class _FakeDio_0 extends _i1.SmartFake implements _i2.Dio {
+  _FakeDio_0(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -40,19 +40,19 @@ class _FakeClient_0 extends _i1.SmartFake implements _i2.Client {
 /// A class which mocks [HttpServiceBase].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockHttpServiceBase extends _i1.Mock implements _i3.HttpServiceBase {
+class MockHttpServiceBase extends _i1.Mock implements _i3.DioServiceBase {
   MockHttpServiceBase() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i2.Client get http => (super.noSuchMethod(
-        Invocation.getter(#http),
-        returnValue: _FakeClient_0(
+  _i2.Dio get dio => (super.noSuchMethod(
+        Invocation.getter(#dio),
+        returnValue: _FakeDio_0(
           this,
-          Invocation.getter(#http),
+          Invocation.getter(#dio),
         ),
-      ) as _i2.Client);
+      ) as _i2.Dio);
 
   @override
   _i4.Future<dynamic> get(String? url) => (super.noSuchMethod(

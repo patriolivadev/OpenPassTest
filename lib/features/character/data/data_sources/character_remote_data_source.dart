@@ -1,12 +1,12 @@
 import 'package:injectable/injectable.dart';
-import 'package:open_pass_test_oliva_patricio/core/services/http_service.dart';
+import 'package:open_pass_test_oliva_patricio/core/services/dio_service.dart';
 import 'package:open_pass_test_oliva_patricio/features/character/data/data_sources/character_local_data_source.dart';
 import 'package:open_pass_test_oliva_patricio/features/character/data/models/character_model.dart';
 import 'package:open_pass_test_oliva_patricio/core/entities/filter.dart';
 import 'package:open_pass_test_oliva_patricio/features/character/domain/entities/characters_response.dart';
 
 abstract class CharacterRemoteDataSourceBase {
-  final HttpServiceBase http;
+  final DioServiceBase http;
   final CharacterLocalDataSourceBase local;
 
   CharacterRemoteDataSourceBase({

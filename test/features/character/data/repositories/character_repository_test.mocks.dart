@@ -7,7 +7,7 @@ import 'dart:async' as _i6;
 
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:open_pass_test_oliva_patricio/core/entities/filter.dart' as _i7;
-import 'package:open_pass_test_oliva_patricio/core/services/http_service.dart'
+import 'package:open_pass_test_oliva_patricio/core/services/dio_service.dart'
     as _i2;
 import 'package:open_pass_test_oliva_patricio/features/character/data/data_sources/character_local_data_source.dart'
     as _i3;
@@ -32,7 +32,7 @@ import 'package:open_pass_test_oliva_patricio/features/character/domain/entities
 // ignore_for_file: subtype_of_sealed_class
 
 class _FakeHttpServiceBase_0 extends _i1.SmartFake
-    implements _i2.HttpServiceBase {
+    implements _i2.DioServiceBase {
   _FakeHttpServiceBase_0(
     Object parent,
     Invocation parentInvocation,
@@ -74,13 +74,13 @@ class MockCharacterRemoteDataSourceBase extends _i1.Mock
   }
 
   @override
-  _i2.HttpServiceBase get http => (super.noSuchMethod(
+  _i2.DioServiceBase get http => (super.noSuchMethod(
         Invocation.getter(#http),
         returnValue: _FakeHttpServiceBase_0(
           this,
           Invocation.getter(#http),
         ),
-      ) as _i2.HttpServiceBase);
+      ) as _i2.DioServiceBase);
 
   @override
   _i3.CharacterLocalDataSourceBase get local => (super.noSuchMethod(

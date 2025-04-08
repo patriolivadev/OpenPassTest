@@ -2,14 +2,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:open_pass_test_oliva_patricio/core/entities/filter.dart';
-import 'package:open_pass_test_oliva_patricio/core/services/http_service.dart';
+import 'package:open_pass_test_oliva_patricio/core/services/dio_service.dart';
 import 'package:open_pass_test_oliva_patricio/features/character/data/data_sources/character_remote_data_source.dart';
 import 'package:open_pass_test_oliva_patricio/features/character/data/data_sources/character_local_data_source.dart';
 import 'package:open_pass_test_oliva_patricio/features/character/data/models/character_model.dart';
 
 import 'character_remote_data_source_test.mocks.dart';
 
-@GenerateMocks([HttpServiceBase, CharacterLocalDataSourceBase])
+@GenerateMocks([DioServiceBase, CharacterLocalDataSourceBase])
 void main() {
   late MockHttpServiceBase mockHttpService;
   late MockCharacterLocalDataSourceBase mockLocalDataSource;

@@ -1,26 +1,25 @@
-import 'dart:convert';
-import 'package:http/http.dart';
+import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
-abstract class HttpServiceBase {
-  final Client http;
+abstract class DioServiceBase {
+  final Dio dio;
 
-  HttpServiceBase({required this.http});
+  DioServiceBase({required this.dio});
 
   Future<dynamic> get(String url);
 }
 
-@Injectable(as: HttpServiceBase)
-class HttpService extends HttpServiceBase {
-  HttpService({required super.http});
+@Injectable(as: DioServiceBase)
+class DioService extends DioServiceBase {
+  DioService({required super.dio});
 
   @override
   Future<dynamic> get(String url) async {
     try {
-      final response = await http.get(Uri.parse(url));
+      final response = await dio.get(url);
 
       if (response.statusCode == 200) {
-        return json.decode(response.body);
+        return response.data;
       } else {
         throw Exception('Error en la solicitud GET: ${response.statusCode}');
       }
